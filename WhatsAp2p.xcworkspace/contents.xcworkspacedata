@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:ServerWhatsAp2p/ServerWhatsAp2p.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ClientWhatsAp2p/ClientWhatsAp2p.xcodeproj">
+   </FileRef>
+</Workspace>
