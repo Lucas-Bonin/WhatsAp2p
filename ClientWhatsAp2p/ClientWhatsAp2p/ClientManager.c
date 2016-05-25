@@ -54,7 +54,7 @@ void createGroup(){
     
 }
 
-void sendData(){
+void sendDataNovoNome(){
     // Verificar se contato esta online
 }
 

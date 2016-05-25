@@ -11,6 +11,13 @@
 
 #include <netinet/in.h>
 
+// Enums para tratamento de mensagens
+enum OptionsMainMenu{
+    CREATE_NEW_GROUP,
+    SEND_MESSAGE,
+    QUIT
+};
+
 typedef struct _rawData{
     int teste;
 }rawData;

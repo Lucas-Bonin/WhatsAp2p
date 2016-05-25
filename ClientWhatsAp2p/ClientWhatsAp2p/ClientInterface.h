@@ -11,11 +11,8 @@
 
 #include <stdio.h>
 
-enum OptionsMainMenu{
-    CREATE_NEW_GROUP,
-    SEND_MESSAGE,
-    QUIT
-};
+//Bibliotecas proprias
+#include "Containers.h"
 
 enum OptionsMainMenu mainMenu();
 
