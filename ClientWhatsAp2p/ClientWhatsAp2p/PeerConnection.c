@@ -10,26 +10,102 @@
 
 #include <stdlib.h>
 
+#include <string.h> // memcpy
+
 //Bibliotecas para socket
 #include <unistd.h>
 #include <sys/socket.h>
 
-//Funcoes da classe
-rawData recvData(struct _Connection *self){ // TODO: Tratar dado recebido antes de mostrar para o usuario e ter um parametro que diga se e uma mensagem de texto ou outro tipo de arquivo.
-    rawData teste;
-    // Recebe uma mensagem via TCP
+void encodeData(datagram dat, char **dataEncoded){
+    char size[HEADER_PARAM_LENGTH];
+    char command[HEADER_PARAM_LENGTH];
     
-    if(recv(self->socket, &teste, sizeof(teste), 0) < 0){
-        perror("Recv()");
-        exit(0);
-    }
-
-    return teste;
+    // Aloca memoria necessaria para criar o datagrama
+    char *datagram = malloc((HEADER_DATAGRAM_LENGTH + dat.size) * sizeof(char));
+    
+    // Transforma o parametros em string
+    sprintf(command, "%d", dat.op);
+    sprintf(size, "%d",dat.size);
+    
+    //Concatena tudo em um unico datagrama
+    memcpy(datagram, size, sizeof(size));
+    memcpy((datagram + sizeof(size)), command, sizeof(command));
+    memcpy((datagram + HEADER_DATAGRAM_LENGTH), dat.data, dat.size);
+    
+    *dataEncoded = datagram;
 }
 
-void sendData(Connection *self){ //TODO: Mandar arquivos de maneira correta
-    rawData teste;
-    if (send(self->socket, &teste, sizeof(teste), 0) < 0){
+
+//Funcoes da classe
+datagram recvData(struct _Connection *self){
+    
+    // Recebe header
+    long partialData = 0;
+    long currentData = 0;
+    char *rawData = malloc(HEADER_DATAGRAM_LENGTH); // Aloca memoria suficiente para receber o header
+    
+    // Loop para receber o header inteiro
+    while(partialData < HEADER_DATAGRAM_LENGTH){
+        
+        currentData = recv(self->socket, (rawData + partialData), (HEADER_DATAGRAM_LENGTH - partialData), 0);
+        if(currentData < 0){
+            perror("Recv()");
+            exit(0);
+        }
+        
+        partialData += currentData;
+    }
+    
+    // Decodifica header
+    char size[HEADER_PARAM_LENGTH];
+    char command[HEADER_PARAM_LENGTH];
+    
+    memcpy(size, rawData, sizeof(size));
+    memcpy(command, (rawData + sizeof(size)), sizeof(command));
+    
+    int sizeNum = (int)strtol(size, (char **)NULL, 10);
+    int cmdNum = (int)strtol(command, (char **)NULL, 10);
+    
+    // Recebe a mensagem
+    realloc(rawData, sizeNum * sizeof(char)); // Realoca memoria com o tamanho da mensagem
+    
+    partialData = currentData = 0;
+    
+    // Loop para receber a mensagem inteira
+    while(partialData < sizeNum){
+        
+        currentData = recv(self->socket, (rawData + partialData), sizeNum - partialData, 0);
+        if(currentData < 0){
+            perror("Recv()");
+            exit(0);
+        }
+        
+        partialData += currentData;
+    }
+    
+    // Verifica o que veio na mensagem
+    for(int i=0; i<sizeNum; i++){
+        printf("%c ",rawData[i]);
+    }
+    
+    //Monta a struct para enviar como retorno da funcao
+    datagram dat;
+    
+    dat.op = cmdNum;
+    dat.size = sizeNum;
+    dat.data = rawData;
+    
+    return dat;
+}
+
+void sendData(Connection *self, datagram data){ //TODO: Mandar arquivos de maneira correta
+
+    char *dataEncoded;
+    
+    // Codifica a mensagem
+    encodeData(data, &dataEncoded);
+
+    if (send(self->socket, dataEncoded, (data.size + HEADER_DATAGRAM_LENGTH), 0) < 0){
         perror("Send()");
         exit(0);
     }
@@ -49,4 +125,3 @@ void newConnection(Connection *self, int socket){
     self->closeConnection = &closeConnection;
     
 }
-

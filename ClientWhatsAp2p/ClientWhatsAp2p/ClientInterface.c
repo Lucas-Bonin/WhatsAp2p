@@ -21,9 +21,9 @@ int checkOption(int input, int maxNum){
 }
 
 //Retorna a opcao escolhida pelo usuário
-enum OptionsMainMenu mainMenu(){
+OptionsMainMenu mainMenu(){
     
-    enum OptionsMainMenu opt;
+     OptionsMainMenu opt;
     
     int answ;
     

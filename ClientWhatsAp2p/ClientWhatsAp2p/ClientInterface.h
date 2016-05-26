@@ -14,6 +14,6 @@
 //Bibliotecas proprias
 #include "Containers.h"
 
-enum OptionsMainMenu mainMenu();
+OptionsMainMenu mainMenu();
 
 #endif /* ClientInterface_h */

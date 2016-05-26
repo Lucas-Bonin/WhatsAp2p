@@ -22,8 +22,8 @@ typedef struct _Connection{
     int socket;
     
     // Funcoes
-    rawData (*recvData)(struct _Connection *self);
-    void (*sendData)(struct _Connection *self);
+    datagram (*recvData)(struct _Connection *self);
+    void (*sendData)(struct _Connection *self, datagram data);
     void (*closeConnection)(struct _Connection *self);
     
 }Connection;

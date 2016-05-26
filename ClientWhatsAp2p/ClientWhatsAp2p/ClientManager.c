@@ -67,7 +67,7 @@ void requestLoop(short port, char *hostName){
     Connection servConnection;
     
     
-    enum OptionsMainMenu opt;
+    OptionsMainMenu opt;
     
     do{
         // Se conecta com o servidor
