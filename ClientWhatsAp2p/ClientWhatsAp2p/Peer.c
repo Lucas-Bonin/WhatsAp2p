@@ -56,13 +56,14 @@ void* peerHandler(void* param){
     //faz o cast dos dados para um socketData
     socketData *sData = (socketData*) param;
     
-    printf("numSocket: %d",sData->socket);
-    
     //cria um objeto para tratar das requisicoes
     Connection peerConnection;
     newConnection(&peerConnection, sData->socket);
     
     // TODO: tratar das mensagens recebidas pela conexao
+    
+    
+    
     
     return NULL;
 }

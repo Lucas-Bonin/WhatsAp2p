@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E0243FA71CF3846F005B7899 /* Peer.c in Sources */ = {isa = PBXBuildFile; fileRef = E0243FA51CF3846F005B7899 /* Peer.c */; };
 		E02B4AF61CEAB73500F365DA /* PeerConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = E02B4AF41CEAB73500F365DA /* PeerConnection.c */; };
+		E0776BB31CF7C94F00F89EBC /* Decoders.c in Sources */ = {isa = PBXBuildFile; fileRef = E0776BB11CF7C94F00F89EBC /* Decoders.c */; };
 		E0CABEB01CEAA94F00E339D2 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CABEAF1CEAA94F00E339D2 /* main.c */; };
 		E0FDD1941CF3C55600925304 /* ClientManager.c in Sources */ = {isa = PBXBuildFile; fileRef = E0FDD1921CF3C55600925304 /* ClientManager.c */; };
 		E0FDD1981CF3D2B200925304 /* ClientInterface.c in Sources */ = {isa = PBXBuildFile; fileRef = E0FDD1961CF3D2B200925304 /* ClientInterface.c */; };
@@ -32,6 +33,8 @@
 		E0243FA81CF38C92005B7899 /* Containers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Containers.h; sourceTree = "<group>"; };
 		E02B4AF41CEAB73500F365DA /* PeerConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PeerConnection.c; sourceTree = "<group>"; };
 		E02B4AF51CEAB73500F365DA /* PeerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerConnection.h; sourceTree = "<group>"; };
+		E0776BB11CF7C94F00F89EBC /* Decoders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Decoders.c; sourceTree = "<group>"; };
+		E0776BB21CF7C94F00F89EBC /* Decoders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoders.h; sourceTree = "<group>"; };
 		E0CABEAC1CEAA94F00E339D2 /* ClientWhatsAp2p */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ClientWhatsAp2p; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0CABEAF1CEAA94F00E339D2 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		E0FDD1921CF3C55600925304 /* ClientManager.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ClientManager.c; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 				E0243FA81CF38C92005B7899 /* Containers.h */,
 				E0243FA51CF3846F005B7899 /* Peer.c */,
 				E0243FA61CF3846F005B7899 /* Peer.h */,
+				E0776BB11CF7C94F00F89EBC /* Decoders.c */,
+				E0776BB21CF7C94F00F89EBC /* Decoders.h */,
 				E0FDD1921CF3C55600925304 /* ClientManager.c */,
 				E0FDD1931CF3C55600925304 /* ClientManager.h */,
 			);
@@ -150,6 +155,7 @@
 			files = (
 				E0FDD1981CF3D2B200925304 /* ClientInterface.c in Sources */,
 				E0243FA71CF3846F005B7899 /* Peer.c in Sources */,
+				E0776BB31CF7C94F00F89EBC /* Decoders.c in Sources */,
 				E0CABEB01CEAA94F00E339D2 /* main.c in Sources */,
 				E0FDD1941CF3C55600925304 /* ClientManager.c in Sources */,
 				E02B4AF61CEAB73500F365DA /* PeerConnection.c in Sources */,

@@ -98,17 +98,30 @@ datagram recvData(struct _Connection *self){
     return dat;
 }
 
-void sendData(Connection *self, datagram data){ //TODO: Mandar arquivos de maneira correta
+void sendData(Connection *self, datagram data){
 
     char *dataEncoded;
     
     // Codifica a mensagem
     encodeData(data, &dataEncoded);
-
-    if (send(self->socket, dataEncoded, (data.size + HEADER_DATAGRAM_LENGTH), 0) < 0){
-        perror("Send()");
-        exit(0);
+    
+    // Envia a mensagem
+    long totalDataSize = (data.size + HEADER_DATAGRAM_LENGTH);
+    long currentDataSent = 0;
+    long totalDataSent = 0;
+    
+    while(totalDataSent < totalDataSize){
+        currentDataSent = send(self->socket, (dataEncoded + totalDataSent), (totalDataSize - totalDataSent), 0);
+        if (currentDataSent < 0){
+            perror("Send()");
+            exit(0);
+        }
+        
+        totalDataSent += currentDataSent;
     }
+    
+    //Desacola memoria ja utilizada
+    free(dataEncoded);
 }
 
 void closeConnection(Connection *self){

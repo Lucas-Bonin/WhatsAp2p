@@ -12,9 +12,13 @@
 #include <netinet/in.h>
 
 // Constantes
-#define PAYLOAD_MAX_LENGTH 100
 #define HEADER_DATAGRAM_LENGTH 32
 #define HEADER_PARAM_LENGTH 16
+
+// Constantes para Mensagem
+#define HEADER_MESSAGE_LENGHT 70
+#define HEADER_PARAM_MESSAGE 16
+#define FLAG_MESSAGE 16
 
 // Enums para tratamento de mensagens
 typedef enum _OptionsMainMenu{
@@ -40,6 +44,21 @@ typedef struct _datagram{
     int size;
     char *data; // Tamanho da mensagem pode variar
 }datagram;
+
+// Estruturas para a decodificacao das mensagens
+typedef enum _MessageType{
+    TEXT,
+    IMAGE
+}MessageType;
+
+typedef struct _messageData{
+    char number[HEADER_PARAM_MESSAGE];
+    char group[HEADER_PARAM_MESSAGE];
+    int size;
+    int isGroup;
+    MessageType type;
+    char *data;
+}messageData;
 
 #endif /* Containers_h */
 

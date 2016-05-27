@@ -10,5 +10,16 @@
 #define Decoders_h
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+//Bibliotecas proprias
+#include "Containers.h"
+
+messageData decodeMessage(char *rawData);
+
+void encodeMessage(messageData dat, char **messageEncoded);
+
 
 #endif /* Decoders_h */
