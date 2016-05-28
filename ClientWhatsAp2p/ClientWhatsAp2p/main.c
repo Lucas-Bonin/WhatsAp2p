@@ -7,34 +7,71 @@
 //
 
 #include <stdio.h>
-#include <netinet/in.h>
+#include <stdlib.h>
 
-#include "PeerConnection.h"
-#include "Decoders.h"
-#include "Containers.h"
-#include <string.h>
+// Bibliotecas proprias
+#include "Peer.h"
+#include "ClientManager.h"
 
-int main(int argc, const char * argv[]) {
-   
-    char *mensagemTeste = "Mensagem Teste";
-    messageData teste;
+// Bibliotecas para thread
+#include <pthread.h>
+
+void* interFunc(void *param){
+    printf("Entrou no thread de interface\n");
     
-    strcpy(teste.data,mensagemTeste);
-    strcpy(teste.group,"nomeGrupoTeste");
-    strcpy(teste.number,"643563456");
-    teste.isGroup = 1;
-    teste.type = TEXT;
-    teste.size = (int)strlen(mensagemTeste + 1);
+    serverParam *sParam = (serverParam*) param;
     
-    char *resp;
-    
-    encodeMessage(teste, &resp);
-    
-    messageData teste2;
-    
-    teste2 = decodeMessage(resp);
-    
-    printf("%d",teste.size);
-    
-    return 0;
+    //requestLoop(sParam->port, sParam->hostName); // Quando servidor estiver funcionando descomentar essa linha
+    return NULL;
 }
+
+void* peerFunc(void *param){
+    printf("Entrou no thread de peer\n");
+    
+    short port = *(short*)param;
+    
+    connectionLoop(port);
+    
+    return NULL;
+}
+
+//int main(int argc, const char * argv[]){
+//    
+//    //Recebendo parametros
+//    unsigned short port;
+//    
+//    // O primeiro argumento (argv[1]) é o hostname do servidor.
+//    // O segundo argumento (argv[2]) é a porta do servidor.
+//    
+//    // Cheat
+//    argc = 3;
+//    argv[1] = "localhost";
+//    argv[2] = "5000";
+//    
+//    if (argc != 3)
+//    {
+//        fprintf(stderr, "Use: %s hostname porta\n", argv[0]);
+//        exit(1);
+//    }
+//    
+//    port = (unsigned short) atoi(argv[2]);
+//    
+//    serverParam param;
+//    param.port = port;
+//    param.hostName = (char*)argv[1];
+//    
+//    
+//    // Thread para interface
+//    pthread_t interThread;
+//    pthread_create(&interThread, NULL, &interFunc, &param);
+//    
+//    // Thread para interface
+//    short portParam = PORT_PEER_CONNECTION;
+//    pthread_t peerThread;
+//    pthread_create(&peerThread, NULL, &peerFunc, &portParam);
+//    
+//    while(1){
+//    }
+// 
+//    return 0;
+//}

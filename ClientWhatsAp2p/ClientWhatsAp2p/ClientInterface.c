@@ -8,7 +8,7 @@
 
 #include "ClientInterface.h"
 
-// TODO: Caprichar mais nos menus
+// TODO: Caprichar mais nos menus (pesquisar sobre gtk.org)
 
 
 // Verifica se usuario escolheu uma opcao valida
@@ -48,4 +48,35 @@ OptionsMainMenu mainMenu(){
     }
     
     return opt;
+}
+
+void showNewMessage(messageData dat){
+    printf("\n======================================================================\n");
+    printf("Nova Mensagem\n\n");
+    printf("Numero: %s\n",dat.number);
+    printf("Grupo: %s\n",(dat.isGroup == 1) ? dat.group : "SEM GRUPO");
+    if(dat.type == TEXT)
+        printf("\n%s\n",dat.data);
+    else
+        printf("Mensagem com tipo desconhecido: %d\n",dat.type);
+    printf("\n======================================================================\n");
+    
+}
+
+// Retorna uma struct que identifica um grupo ou pessoa
+void sendMessageMenu(){
+    int answ;
+    printf("\n======================================================================\n");
+    printf("Para quem a mensagem sera mandada ?\n");
+    
+    // TODO: Mostrar uma tabela com os contatos
+    
+    // TODO: Quando usuario escolher para quem ira a mensagem, perguntar para ele se aquela foi realmente a opcao que ele escolheu
+    
+    //showContact()
+    
+}
+
+void showContact(){
+    
 }

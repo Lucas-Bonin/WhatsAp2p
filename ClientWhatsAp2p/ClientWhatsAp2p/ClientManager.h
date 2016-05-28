@@ -15,10 +15,15 @@
 // Bibliotecas para socket
 #include <netdb.h>
 #include <sys/socket.h>
+#include <string.h>
 
 // Bibliotecas proprias
 #include "PeerConnection.h"
 #include "ClientInterface.h"
+#include "Decoders.h"
+
+void requestLoop(short port, char *hostName);
+
 
 
 #endif /* ClientManager_h */

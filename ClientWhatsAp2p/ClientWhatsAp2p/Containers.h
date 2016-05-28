@@ -20,6 +20,15 @@
 #define HEADER_PARAM_MESSAGE 16
 #define FLAG_MESSAGE 16
 
+// Constantes para porta
+#define PORT_PEER_CONNECTION 5010
+
+// Estruturas para guradar dados do servidor
+typedef struct _serverParam{
+    short port;
+    char *hostName;
+}serverParam;
+
 // Enums para tratamento de mensagens
 typedef enum _OptionsMainMenu{
     CREATE_NEW_GROUP,
@@ -28,8 +37,8 @@ typedef enum _OptionsMainMenu{
 }OptionsMainMenu;
 
 typedef enum _ProtocolCommand{
-    PROT1,
-    PROT2,
+    MESSAGE,
+    PING,
     PROT3
 }ProtocolCommand;
 
@@ -59,6 +68,11 @@ typedef struct _messageData{
     MessageType type;
     char *data;
 }messageData;
+
+// Estrutura para salvar pessoa ou grupo no banco de dados
+typedef struct _contactDTO{
+  // TODO: definir que dados vao ser gravados
+}contactDTO;
 
 #endif /* Containers_h */
 

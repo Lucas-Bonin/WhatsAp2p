@@ -44,9 +44,56 @@ int makeClientSocket(short port, char *hostName){
     return s;
 }
 
+// Codifica mensagem
+datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, char *message){
+    messageData mDat;
+    strncpy(mDat.number,myNumber,sizeof(mDat.number));
+    
+    if (groupName != NULL) {
+        strncpy(mDat.group, groupName, sizeof(mDat.group));
+        mDat.isGroup = 1;
+    }else{
+        mDat.isGroup = 0;
+    }
+    
+    mDat.type = type;
+    
+    mDat.data = message;
+    
+    switch (type) {
+        case TEXT:
+            mDat.size = (int)strlen(message);
+            break;
+        case IMAGE:
+            printf("TAMANHO DE IMAGEM NAO DEFINIDO, ENCERRANDO PROGRAMA");
+            exit(0);
+            break;
+        default:
+            printf("TIPO DE DADO DA MENSAGEM DESCONHECIDO, ENCERRANDO PROGRAMA");
+            exit(0);
+            break;
+    }
+    
+    // Transforma struct de mensagem em uma string
+    char *encodedMessage;
+    encodeMessage(mDat, &encodedMessage);
+    
+    //Cria datagrama
+    datagram dat;
+    
+    dat.op = MESSAGE;
+    dat.size = mDat.size + HEADER_MESSAGE_LENGHT;
+    dat.data = encodedMessage;
+    
+    return dat;
+}
+
+
+
 // TODO: Fazer as 3 funcoes muthafocka do cliente
 
 void addContact(){
+    
     
 }
 
@@ -54,29 +101,30 @@ void createGroup(){
     
 }
 
-void sendDataNovoNome(){
-    // Verificar se contato esta online
+void sendDataToPeer(){
+    // TODO: Verificar se contato esta online
+    //
 }
 
 
 
 
 void requestLoop(short port, char *hostName){
+    printf("Entrou no Request Loop\n");
+    
     int servSocket;
-    int peerSocket;
     Connection servConnection;
-    
-    
     OptionsMainMenu opt;
     
+    // Se conecta com o servidor
+    servSocket = makeClientSocket(port, hostName);
+    newConnection(&servConnection, servSocket);
+    
     do{
-        // Se conecta com o servidor
-        servSocket = makeClientSocket(port, hostName);
-        newConnection(&servConnection, servSocket);
+
         
         // TODO: Fazer algum tipo de requisicao para o servidor sempre que tentar enviar uma mensagem para alguem
         
-        // TODO: Desacoplar verificacao e escolha da Opcao
         
          opt = mainMenu();
         

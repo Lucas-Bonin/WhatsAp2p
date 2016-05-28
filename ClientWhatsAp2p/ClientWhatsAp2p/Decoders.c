@@ -91,6 +91,14 @@ void encodeMessage(messageData dat, char **messageEncoded){
     offset += sizeof(size);
     memcpy(message + offset, dat.data, dat.size);
     
+    // Teste
+//    printf("\nTESTE encodeMessage\n");
+//    char t[100];
+//    memcpy(t,message,100);
+//    for (int i=0; i<100; i++) {
+//        printf("%c ",t[i]);
+//    }
+    
     *messageEncoded = message;
 
 }

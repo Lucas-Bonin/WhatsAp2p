@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E0243FA71CF3846F005B7899 /* Peer.c in Sources */ = {isa = PBXBuildFile; fileRef = E0243FA51CF3846F005B7899 /* Peer.c */; };
+		E028E03E1CF90AF800C6503D /* MainForTest.c in Sources */ = {isa = PBXBuildFile; fileRef = E028E03D1CF90AF800C6503D /* MainForTest.c */; };
 		E02B4AF61CEAB73500F365DA /* PeerConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = E02B4AF41CEAB73500F365DA /* PeerConnection.c */; };
 		E0776BB31CF7C94F00F89EBC /* Decoders.c in Sources */ = {isa = PBXBuildFile; fileRef = E0776BB11CF7C94F00F89EBC /* Decoders.c */; };
 		E0CABEB01CEAA94F00E339D2 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E0CABEAF1CEAA94F00E339D2 /* main.c */; };
@@ -31,6 +32,7 @@
 		E0243FA51CF3846F005B7899 /* Peer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Peer.c; sourceTree = "<group>"; };
 		E0243FA61CF3846F005B7899 /* Peer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peer.h; sourceTree = "<group>"; };
 		E0243FA81CF38C92005B7899 /* Containers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Containers.h; sourceTree = "<group>"; };
+		E028E03D1CF90AF800C6503D /* MainForTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MainForTest.c; sourceTree = "<group>"; };
 		E02B4AF41CEAB73500F365DA /* PeerConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PeerConnection.c; sourceTree = "<group>"; };
 		E02B4AF51CEAB73500F365DA /* PeerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerConnection.h; sourceTree = "<group>"; };
 		E0776BB11CF7C94F00F89EBC /* Decoders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Decoders.c; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			children = (
 				E0FDD1951CF3D29400925304 /* GUI */,
 				E0CABEAF1CEAA94F00E339D2 /* main.c */,
+				E028E03D1CF90AF800C6503D /* MainForTest.c */,
 				E02B4AF41CEAB73500F365DA /* PeerConnection.c */,
 				E02B4AF51CEAB73500F365DA /* PeerConnection.h */,
 				E0243FA81CF38C92005B7899 /* Containers.h */,
@@ -157,6 +160,7 @@
 				E0243FA71CF3846F005B7899 /* Peer.c in Sources */,
 				E0776BB31CF7C94F00F89EBC /* Decoders.c in Sources */,
 				E0CABEB01CEAA94F00E339D2 /* main.c in Sources */,
+				E028E03E1CF90AF800C6503D /* MainForTest.c in Sources */,
 				E0FDD1941CF3C55600925304 /* ClientManager.c in Sources */,
 				E02B4AF61CEAB73500F365DA /* PeerConnection.c in Sources */,
 			);
