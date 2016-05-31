@@ -15,5 +15,9 @@
 #include "Containers.h"
 
 OptionsMainMenu mainMenu();
+void showNewMessage(messageData dat);
+contactDTO findContactMenu();
+
+
 
 #endif /* ClientInterface_h */

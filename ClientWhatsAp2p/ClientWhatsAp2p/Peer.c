@@ -51,6 +51,18 @@ int makeServerSocket(short port, int numConnections){
     return serverSocket;
 }
 
+// Trata da mensagem recebida
+void messageHandler(char *data){
+    // Deodifica mensagem
+    messageData dat = decodeMessage(data);
+    
+    // Mostra a mensagem para o usuario
+    showNewMessage(dat);
+    
+    //TODO: Melhor local para desalocar memoria ja usada e se necessario, armazenar a informacao se usuario nao quiser ver a mensagem naquele momento.
+    
+}
+
 void* peerHandler(void* param){
     
     //faz o cast dos dados para um socketData
@@ -60,16 +72,32 @@ void* peerHandler(void* param){
     Connection peerConnection;
     newConnection(&peerConnection, sData->socket);
     
-    // TODO: tratar das mensagens recebidas pela conexao
+    // Espera mensagem
+    datagram dat = peerConnection.recvData(&peerConnection);
     
+    // Trata o tipo da mensagem
     
+    switch (dat.op) {
+        case MESSAGE:
+            messageHandler(dat.data);
+            break;
+        case PING:
+            printf("Funcao para mandar um ping de resposta para o servidor");
+            break;
+        default:
+            printf("Tipo de mensagem invalido: %d",dat.op);
+            break;
+    }
     
+    // Fecha conexao
+    peerConnection.closeConnection(&peerConnection);
     
     return NULL;
 }
 
 // Um loop que aceita conexoes de outros peers
 void connectionLoop(short serverPort){
+    printf("Entrou no connectionLoop\n");
     
     // Dados socket
     int clientSocket, serverSocket;

@@ -12,5 +12,9 @@
 #include <stdio.h>
 #include "Containers.h"
 #include "PeerConnection.h"
+#include "Decoders.h"
+#include "ClientInterface.h"
+
+void connectionLoop(short serverPort);
 
 #endif /* Peer_h */

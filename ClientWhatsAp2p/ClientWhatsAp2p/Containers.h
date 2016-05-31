@@ -20,6 +20,21 @@
 #define HEADER_PARAM_MESSAGE 16
 #define FLAG_MESSAGE 16
 
+// Constantes para porta
+#define PORT_PEER_CONNECTION 5010
+
+// Numero maximo de pessoas por grupo
+#define MAX_GROUP_LENGTH 50
+
+// Maximo de strucs armazenadas no banco de dados
+#define MAX_DATABASE_LENGTH 100
+
+// Estruturas para guradar dados do servidor
+typedef struct _serverParam{
+    short port;
+    char *hostName;
+}serverParam;
+
 // Enums para tratamento de mensagens
 typedef enum _OptionsMainMenu{
     CREATE_NEW_GROUP,
@@ -28,9 +43,10 @@ typedef enum _OptionsMainMenu{
 }OptionsMainMenu;
 
 typedef enum _ProtocolCommand{
-    PROT1,
-    PROT2,
-    PROT3
+    MESSAGE,
+    PING,
+    SERVER_QUERY,
+    PEER_CONNECTED
 }ProtocolCommand;
 
 typedef struct _socketData{
@@ -59,6 +75,14 @@ typedef struct _messageData{
     MessageType type;
     char *data;
 }messageData;
+
+// Estrutura para salvar pessoa ou grupo no banco de dados
+typedef struct _contactDTO{
+    char group[16];
+    int isGroup; // Verifica se struct eh um grupo ou uma pessoa
+    int totalNumbers;
+    int numbers[MAX_GROUP_LENGTH];
+}contactDTO;
 
 #endif /* Containers_h */
 
