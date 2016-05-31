@@ -50,6 +50,21 @@ OptionsMainMenu mainMenu(){
     return opt;
 }
 
+//Mostra informacoes do contato na tela
+void showContact(contactDTO contact){
+    
+    if(contact.isGroup == 1){
+        printf("Grupo: %s\n",contact.group);
+        printf("Numeros nesse grupo:\n");
+        for (int i=0; i<contact.totalNumbers; i++) {
+            printf("\t%d\n",contact.numbers[i]);
+        }
+    }else{
+        printf("Numero do Contato:\n%d\n",contact.numbers[0]);
+    }
+}
+
+
 void showNewMessage(messageData dat){
     printf("\n======================================================================\n");
     printf("Nova Mensagem\n\n");
@@ -64,19 +79,42 @@ void showNewMessage(messageData dat){
 }
 
 // Retorna uma struct que identifica um grupo ou pessoa
-void sendMessageMenu(){
+contactDTO findContactMenu(){
     int answ;
-    printf("\n======================================================================\n");
-    printf("Para quem a mensagem sera mandada ?\n");
-    
-    // TODO: Mostrar uma tabela com os contatos
-    
-    // TODO: Quando usuario escolher para quem ira a mensagem, perguntar para ele se aquela foi realmente a opcao que ele escolheu
-    
-    //showContact()
-    
-}
+    contactDTO contacts[MAX_DATABASE_LENGTH];
 
-void showContact(){
+    
+    while(1){
+        printf("\n======================================================================\n");
+        printf("Para quem a mensagem sera mandada ?\n");
+        printf("Digite o numero correspondente ao contato");
+        //TODO: Chama funcao que retorna um vetor de structs do tipo contactDTO
+        
+        // Tamanho do loop sera o mesmo que o retorno da funcao que faz o load dos contatos
+        for (int i=0; i<1; i++) {
+            printf("INDEX: %d\n",i+1);
+            showContact(contacts[i]);
+        }
+        
+        scanf("%d",&answ);
+
+        while(checkOption(answ, 1)){ //tamanho maximo sera igual ao retorno da funcao
+            printf("Opcao invalida\n");
+            scanf("%d",&answ);
+        }
+        
+        printf("Tem certeza que quer escolher esse numero\n1 - Sim\n2 - Nao\n");
+        showContact(contacts[answ]);
+        
+        do{
+            scanf("%d",&answ);
+        }while(answ != 1 && answ != 0);
+        
+        if(answ == 1)
+            break;
+    }
+    
+    return contacts[answ];
     
 }
+//

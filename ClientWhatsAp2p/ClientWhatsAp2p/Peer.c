@@ -76,6 +76,7 @@ void* peerHandler(void* param){
     datagram dat = peerConnection.recvData(&peerConnection);
     
     // Trata o tipo da mensagem
+    
     switch (dat.op) {
         case MESSAGE:
             messageHandler(dat.data);

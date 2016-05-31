@@ -23,6 +23,12 @@
 // Constantes para porta
 #define PORT_PEER_CONNECTION 5010
 
+// Numero maximo de pessoas por grupo
+#define MAX_GROUP_LENGTH 50
+
+// Maximo de strucs armazenadas no banco de dados
+#define MAX_DATABASE_LENGTH 100
+
 // Estruturas para guradar dados do servidor
 typedef struct _serverParam{
     short port;
@@ -39,7 +45,8 @@ typedef enum _OptionsMainMenu{
 typedef enum _ProtocolCommand{
     MESSAGE,
     PING,
-    PROT3
+    SERVER_QUERY,
+    PEER_CONNECTED
 }ProtocolCommand;
 
 typedef struct _socketData{
@@ -71,7 +78,10 @@ typedef struct _messageData{
 
 // Estrutura para salvar pessoa ou grupo no banco de dados
 typedef struct _contactDTO{
-  // TODO: definir que dados vao ser gravados
+    char group[16];
+    int isGroup; // Verifica se struct eh um grupo ou uma pessoa
+    int totalNumbers;
+    int numbers[MAX_GROUP_LENGTH];
 }contactDTO;
 
 #endif /* Containers_h */

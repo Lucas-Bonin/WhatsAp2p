@@ -128,7 +128,6 @@ void closeConnection(Connection *self){
     close(self->socket);
 }
 
-
 // Construtor da classe
 void newConnection(Connection *self, int socket){
     self->socket = socket;

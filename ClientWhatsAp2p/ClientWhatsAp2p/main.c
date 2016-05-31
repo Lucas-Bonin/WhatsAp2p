@@ -34,7 +34,7 @@ void* peerFunc(void *param){
     
     return NULL;
 }
-
+//
 //int main(int argc, const char * argv[]){
 //    
 //    //Recebendo parametros
