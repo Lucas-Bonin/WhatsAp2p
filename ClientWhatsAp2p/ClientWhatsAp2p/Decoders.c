@@ -39,10 +39,10 @@ messageData decodeMessage(char *rawData){
     // Faz o cast para numero
     int sizeNum = (int)strtol(size, (char **)NULL, 10);
     int flagNum = (int)strtol(flagGroup, (char **)NULL, 10);
-    int typeNum = (int)strtol(fileType, (char **)NULL, 10);
+    MessageType typeNum = (MessageType)strtol(fileType, (char **)NULL, 10);
     
     // Decodifica dados
-    char *messageData = malloc(sizeNum * sizeof(char));
+    char *messageData = (char*) malloc(sizeNum * sizeof(char));
     
     offset += sizeof(size);
     memcpy(messageData, rawData + offset, sizeNum * sizeof(char));
@@ -71,7 +71,7 @@ void encodeMessage(messageData dat, char **messageEncoded){
     sprintf(size, "%d",dat.size);
     
     // Aloca memoria necessaria para criar a mensagem
-    char *message = malloc((HEADER_MESSAGE_LENGHT + dat.size) * sizeof(char));
+    char *message = (char*) malloc((HEADER_MESSAGE_LENGHT + dat.size) * sizeof(char));
     
     long offset = 0;
     memcpy(message + offset, flagGroup, sizeof(flagGroup));

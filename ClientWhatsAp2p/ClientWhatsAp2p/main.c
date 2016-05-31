@@ -34,8 +34,8 @@ void* peerFunc(void *param){
     
     return NULL;
 }
-//
-//int main(int argc, const char * argv[]){
+
+int main(int argc, const char * argv[]){
 //    
 //    //Recebendo parametros
 //    unsigned short port;
@@ -73,5 +73,5 @@ void* peerFunc(void *param){
 //    while(1){
 //    }
 // 
-//    return 0;
-//}
+    return 0;
+}

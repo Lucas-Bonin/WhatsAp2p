@@ -19,5 +19,4 @@ void showNewMessage(messageData dat);
 contactDTO findContactMenu();
 
 
-
 #endif /* ClientInterface_h */

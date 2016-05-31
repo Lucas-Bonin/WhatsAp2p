@@ -91,9 +91,9 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
 //Cria imagem e texto
 void createTextMessage(char **data){
     printf("Digite o texto\n");
-    char *text;
+    char *text; //TODO: Não esta faltando Malloc?
     getchar();
-    gets(text);
+    gets(text); //TODO: trocar por fgets ou outra função segura
     *data = text;
 }
 
@@ -193,7 +193,7 @@ void requestLoop(short port, char *hostName){
                 break;
         }
         
-    }while((opt =! QUIT));
+    }while((opt != QUIT));
 }
 
 

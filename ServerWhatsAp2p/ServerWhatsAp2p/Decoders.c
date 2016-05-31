@@ -49,7 +49,7 @@ void encodeMessageServer(serverQuery dat, char **messageEncoded){
     sprintf(ip, "%d", dat.ip);
     
     // Aloca memoria necessaria para criar a mensagem
-    char *message = malloc(HEADER_PARAM_MESSAGE * 3);
+    char *message = (char*) malloc(HEADER_PARAM_MESSAGE * 3);
     
     long offset = 0;
     memcpy(message + offset, dat.number, sizeof(dat.number));

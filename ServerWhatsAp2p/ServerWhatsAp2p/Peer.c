@@ -62,10 +62,10 @@ int makeClientSocket(short port, unsigned int ip) {
     int s;
     
     // Define dados sobre o servidor
-    struct sockaddr_in addr;
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = ip;
-    addr.sin_port = htons(port);
+    //struct sockaddr_in addr; //Não usado
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = ip;
+    server.sin_port = htons(port);
     
     // Cria socket
     if ((s = socket(PF_INET, SOCK_STREAM, 0)) < 0) {

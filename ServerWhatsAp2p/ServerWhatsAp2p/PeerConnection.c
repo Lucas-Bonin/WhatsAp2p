@@ -21,7 +21,7 @@ void encodeData(datagram dat, char **dataEncoded){
     char command[HEADER_PARAM_LENGTH];
     
     // Aloca memoria necessaria para criar o datagrama
-    char *datagram = malloc((HEADER_DATAGRAM_LENGTH + dat.size) * sizeof(char));
+    char *datagram = (char*) malloc((HEADER_DATAGRAM_LENGTH + dat.size) * sizeof(char));
     
     // Transforma o parametros em string
     sprintf(command, "%d", dat.op);
@@ -42,7 +42,7 @@ datagram recvData(struct _Connection *self){
     // Recebe header
     long partialData = 0;
     long currentData = 0;
-    char *rawData = malloc(HEADER_DATAGRAM_LENGTH); // Aloca memoria suficiente para receber o header
+    char *rawData = (char*) malloc(HEADER_DATAGRAM_LENGTH); // Aloca memoria suficiente para receber o header
     
     // Loop para receber o header inteiro
     while(partialData < HEADER_DATAGRAM_LENGTH){
@@ -64,7 +64,7 @@ datagram recvData(struct _Connection *self){
     memcpy(command, (rawData + sizeof(size)), sizeof(command));
     
     int sizeNum = (int)strtol(size, (char **)NULL, 10);
-    int cmdNum = (int)strtol(command, (char **)NULL, 10);
+    ProtocolCommand cmdNum = (ProtocolCommand) strtol(command, (char **)NULL, 10);
     
     // Recebe a mensagem
     realloc(rawData, sizeNum * sizeof(char)); // Realoca memoria com o tamanho da mensagem
