@@ -7,9 +7,11 @@
 //
 
 #include <stdio.h>
+#include "Peer.h"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
     printf("Hello, World!\n");
+    connectionLoop(5000);
     return 0;
 }

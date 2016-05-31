@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D10F10401CF8C628002B5466 /* PeerConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = D10F103E1CF8C628002B5466 /* PeerConnection.c */; };
+		D10F10431CF916A5002B5466 /* Decoders.c in Sources */ = {isa = PBXBuildFile; fileRef = D10F10411CF916A5002B5466 /* Decoders.c */; };
+		D1F989531CFA732600D20D42 /* Peer.c in Sources */ = {isa = PBXBuildFile; fileRef = D1F989511CFA732600D20D42 /* Peer.c */; };
 		E02B4AEE1CEAAA0000F365DA /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E02B4AED1CEAAA0000F365DA /* main.c */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +26,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D10F103A1CF8C5BD002B5466 /* Containers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Containers.h; sourceTree = "<group>"; };
+		D10F103E1CF8C628002B5466 /* PeerConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PeerConnection.c; sourceTree = "<group>"; };
+		D10F103F1CF8C628002B5466 /* PeerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerConnection.h; sourceTree = "<group>"; };
+		D10F10411CF916A5002B5466 /* Decoders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Decoders.c; sourceTree = "<group>"; };
+		D10F10421CF916A5002B5466 /* Decoders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Decoders.h; sourceTree = "<group>"; };
+		D1F989511CFA732600D20D42 /* Peer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Peer.c; sourceTree = "<group>"; };
+		D1F989521CFA732600D20D42 /* Peer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peer.h; sourceTree = "<group>"; };
 		E02B4AEA1CEAAA0000F365DA /* ServerWhatsAp2p */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ServerWhatsAp2p; sourceTree = BUILT_PRODUCTS_DIR; };
 		E02B4AED1CEAAA0000F365DA /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +68,13 @@
 			isa = PBXGroup;
 			children = (
 				E02B4AED1CEAAA0000F365DA /* main.c */,
+				D1F989511CFA732600D20D42 /* Peer.c */,
+				D1F989521CFA732600D20D42 /* Peer.h */,
+				D10F103A1CF8C5BD002B5466 /* Containers.h */,
+				D10F103E1CF8C628002B5466 /* PeerConnection.c */,
+				D10F103F1CF8C628002B5466 /* PeerConnection.h */,
+				D10F10411CF916A5002B5466 /* Decoders.c */,
+				D10F10421CF916A5002B5466 /* Decoders.h */,
 			);
 			path = ServerWhatsAp2p;
 			sourceTree = "<group>";
@@ -118,7 +135,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1F989531CFA732600D20D42 /* Peer.c in Sources */,
 				E02B4AEE1CEAAA0000F365DA /* main.c in Sources */,
+				D10F10431CF916A5002B5466 /* Decoders.c in Sources */,
+				D10F10401CF8C628002B5466 /* PeerConnection.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +259,7 @@
 				E02B4AF31CEAAA0000F365DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
