@@ -18,6 +18,8 @@
 //Bibliotecas para thread
 #include <pthread.h>
 #include <unistd.h>
+#include <arpa/inet.h>
+#include <netdb.h> //gethostbyname()
 
 // Constantes
 #define NUM_CONNECTIONS 5 // Numero maximo de conexoes pendentes
@@ -57,16 +59,23 @@ int makeServerSocket(short port, int numConnections){
     return serverSocket;
 }
 
-int makeClientSocket(short port, unsigned int ip) {
+int makeClientSocket(short port, char *hostName) {
+    
+    struct hostent *hostnm; // Representacao binaria do endereco de IP
     struct sockaddr_in server; // Endereco de um socket
     int s;
     
-    // Define dados sobre o servidor
-    //struct sockaddr_in addr; //Não usado
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = ip;
-    server.sin_port = htons(port);
+    // Obter IP do servidor via DNS
+    hostnm = gethostbyname(hostName);
+    if (hostnm == (struct hostent*) 0){ // Verifica se existe esse hostName
+        fprintf(stderr, "Gethostbyname failed\n");
+        exit(0);
+    }
     
+    // Define dados sobre o servidor
+    server.sin_family = AF_INET;
+    server.sin_port = htons(port);
+    server.sin_addr.s_addr = *((unsigned int *) hostnm->h_addr);
     // Cria socket
     if ((s = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket()");
@@ -83,10 +92,10 @@ int makeClientSocket(short port, unsigned int ip) {
     return s;
 }
 
-int findPeer(short *port, unsigned int *ip, int *index, char *number) {
+int findPeer(short *port, char ip[HEADER_PARAM_MESSAGE], int *index, char *number) {
     for(int i=0;i<numberOfPeers;i++) {
         if(strcmp(peerConnected[i].number, number) == 0){
-            *ip = peerConnected[i].ip;
+            strcpy(ip,peerConnected[i].ip);
             *port = peerConnected[i].port;
             *index = i;
             return 1;
@@ -95,11 +104,11 @@ int findPeer(short *port, unsigned int *ip, int *index, char *number) {
     return 0;
 }
 
-datagram sendPeerOnline(datagram dta, serverQuery query, short port, unsigned int ip) {
+datagram sendPeerOnline(datagram dta, serverQuery query, short port, char ip[HEADER_PARAM_MESSAGE]) {
     printf("ONLINE\n");
     char *messageEncoded;
     dta.op = PEER_ONLINE;
-    query.ip = ip;
+    strcpy(query.ip, ip);
     query.port = port;
     encodeMessageServer(query, &messageEncoded);
     dta.size = HEADER_PARAM_MESSAGE * 3;
@@ -121,14 +130,22 @@ datagram sendPeerOffline(datagram dta, int index, int op) {
     return dta;
 }
 
-datagram isPeerOnline(datagram dta, serverQuery query, short port, unsigned int ip) {
+datagram isPeerOnline(datagram dta, serverQuery query, short port, char ip[HEADER_PARAM_MESSAGE]) {
     int index = 0;
-    if(findPeer(&port, &ip, &index, query.number) == 0)
+    if(findPeer(&port, ip, &index, query.number) == 0)
         return sendPeerOffline(dta, index, 0);
     
     int s = makeClientSocket(port,ip);
-    if(s < 1)
-        return sendPeerOffline(dta, index, 1);
+    
+    // Se nao conseguir criar socket, encerra o programa
+    if(s < 1){
+        printf("Erro ao criar socket para verificacao de cliente/n");
+        exit(0);
+        //return sendPeerOffline(dta, index, 1);
+    }
+    
+    // TODO: Verificacao do peer
+    
     close(s);
     return sendPeerOnline(dta, query, port, ip);
 }
@@ -144,25 +161,29 @@ void* peerHandler(void* param) {
     Connection peerConnection;
     newConnection(&peerConnection, sData->socket);
     
-    // TODO: tratar das mensagens recebidas pela conexao
-    
     datagram dta = peerConnection.recvData(&peerConnection);
     
     serverQuery query = decodeMessageServer(dta.data);
+    
     printf("OPERACAO RECEBIDA: %d\nNUMERO TELEFONE: %s\n",dta.op,query.number);
     
-    unsigned int ip = 0;
-    short port = 0;
+//    unsigned int ip = 0;
+//    short port = 0;
     
     switch (dta.op){
         case PING:
-            dta = isPeerOnline(dta,query,port,ip);
+            dta = isPeerOnline(dta,query,query.port,query.ip);
             peerConnection.sendData(&peerConnection,dta);
             printf("DEU CERTO\n");
             break;
         case PEER_CONNECTION:
+            // Completando as informacoes recebidas do cliente
+            printf("IP address is: %s\n", inet_ntoa(sData->socketAddr.sin_addr));
+            printf("port is: %d\n", (int) ntohs(sData->socketAddr.sin_port));
+            strcpy(query.ip,inet_ntoa(sData->socketAddr.sin_addr));
+            query.port = ntohs(sData->socketAddr.sin_port);
             peerConnected[numberOfPeers++] = query;
-            printf("CADASTRANDO PEER NUMERO: %s PORTA: %d IP: %u\n",query.number,query.port,query.ip);
+            printf("CADASTRANDO PEER NUMERO: %s PORTA: %d IP: %s\n",query.number,query.port,query.ip);
             break;
         default:
             break;
@@ -193,7 +214,7 @@ void connectionLoop(short serverPort) {
             perror("Accept()");
             exit(0);
         }
-        
+
         socketData nSocket;
         nSocket.socket = clientSocket;
         nSocket.socketAddr = clientAddr;

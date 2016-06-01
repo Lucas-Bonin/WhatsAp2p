@@ -29,7 +29,7 @@ typedef enum _OptionsMainMenu{
 }OptionsMainMenu;
 
 typedef enum _ProtocolCommand{
-    PING ,
+    PING,
     PEER_CONNECTION,
     PEER_ONLINE,
     PEER_OFFLINE
@@ -65,7 +65,7 @@ typedef struct _messageData{
 typedef struct _serverQuery{
     char number[HEADER_PARAM_MESSAGE];
     unsigned short port;
-    unsigned int ip;
+    char ip[HEADER_PARAM_MESSAGE];
 }serverQuery;
 
 #endif /* Containers_h */

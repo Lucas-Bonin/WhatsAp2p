@@ -84,5 +84,12 @@ typedef struct _contactDTO{
     int numbers[MAX_GROUP_LENGTH];
 }contactDTO;
 
+// Estrutura para comunicacao com o servidor
+typedef struct _serverQuery{
+    char number[HEADER_PARAM_MESSAGE];
+    unsigned short port;
+    char ip[HEADER_PARAM_MESSAGE];
+}serverQuery;
+
 #endif /* Containers_h */
 

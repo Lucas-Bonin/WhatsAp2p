@@ -7,6 +7,7 @@
 //
 
 #include "ClientManager.h"
+#include <arpa/inet.h> //inet_ntoa()
 
 // Cria um socket para se comunicar com o servidor
 int makeClientSocket(short port, char *hostName){
@@ -175,6 +176,16 @@ void requestLoop(short port, char *hostName){
     // Se conecta com o servidor
     servSocket = makeClientSocket(port, hostName);
     newConnection(&servConnection, servSocket);
+    
+    // TODO: montar mensagem para o servidor
+    
+//    //Cria estrutura para comunicacao com o servidor
+//    struct sockaddr_in localAddress;
+//    unsigned int addrSize = sizeof(localAddress);
+//
+//    getsockname(servSocket, (struct sockaddr*)&localAddress, &addrSize);
+//    printf("IP address is: %s\n", inet_ntoa(localAddress.sin_addr));
+//    printf("port is: %d\n", (int) ntohs(localAddress.sin_port));
     
     do{
         

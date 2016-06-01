@@ -34,7 +34,9 @@ serverQuery decodeMessageServer(char *rawData){
     
     strcpy(dat.number, cellNumber);
     dat.port = portNum;
-    dat.ip = ipNum;
+    //dat.ip = ipNum;
+    strcpy(dat.ip,ip);
+
     
     return dat;
 }
@@ -43,10 +45,10 @@ void encodeMessageServer(serverQuery dat, char **messageEncoded){
     
     // Codificar header
     char port[HEADER_PARAM_MESSAGE];
-    char ip[HEADER_PARAM_MESSAGE];
+    //char ip[HEADER_PARAM_MESSAGE];
     
     sprintf(port, "%d", dat.port);
-    sprintf(ip, "%d", dat.ip);
+    //sprintf(ip, "%d", dat.ip);
     
     // Aloca memoria necessaria para criar a mensagem
     char *message = (char*) malloc(HEADER_PARAM_MESSAGE * 3);
@@ -58,7 +60,7 @@ void encodeMessageServer(serverQuery dat, char **messageEncoded){
     memcpy(message + offset, port, sizeof(port));
     
     offset += sizeof(port);
-    memcpy(message + offset, ip, sizeof(ip));
+    memcpy(message + offset, dat.ip, sizeof(dat.ip));
     
     *messageEncoded = message;
     

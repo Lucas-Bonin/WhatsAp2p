@@ -56,18 +56,18 @@ datagram encodeMessageToPeerTest(char *myNumber, char* groupName, MessageType ty
 }
 
 
-int main(int argc, const char * argv[]){
-    
-    datagram dat = encodeMessageToPeerTest("999-9", "grupoT", TEXT, "MENSAGEM PARA O GRUPO");
-    
-    // Teste
-    printf("\nTESTE main\n");
-    char t[100];
-    memcpy(t,dat.data,100);
-    for (int i=0; i<100; i++) {
-        printf("%c ",t[i]);
-    }
-    
-    return 0;
-
-}
+//int main(int argc, const char * argv[]){
+//    
+//    datagram dat = encodeMessageToPeerTest("999-9", "grupoT", TEXT, "MENSAGEM PARA O GRUPO");
+//    
+//    // Teste
+//    printf("\nTESTE main\n");
+//    char t[100];
+//    memcpy(t,dat.data,100);
+//    for (int i=0; i<100; i++) {
+//        printf("%c ",t[i]);
+//    }
+//    
+//    return 0;
+//
+//}
