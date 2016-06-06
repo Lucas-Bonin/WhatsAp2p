@@ -1,7 +1,7 @@
 
 CC=g++
 OBJ=obj
-FLAGS=-Wall -unused-result
+FLAGS=-unused-result
 
 all: cliente
 

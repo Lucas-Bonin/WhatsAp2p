@@ -29,8 +29,10 @@ typedef enum _OptionsMainMenu{
 }OptionsMainMenu;
 
 typedef enum _ProtocolCommand{
+    MESSAGE,
     PING,
-    PEER_CONNECTION,
+    SERVER_QUERY,
+    PEER_CONNECTED,
     PEER_ONLINE,
     PEER_OFFLINE
 }ProtocolCommand;

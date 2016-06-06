@@ -22,7 +22,7 @@
 #include "ClientInterface.h"
 #include "Decoders.h"
 
-void requestLoop(short port, char *hostName);
+void requestLoop(short port, char *hostName, short listenPort);
 
 
 

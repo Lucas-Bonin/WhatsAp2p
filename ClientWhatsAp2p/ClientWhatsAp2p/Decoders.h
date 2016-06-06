@@ -21,5 +21,8 @@ messageData decodeMessage(char *rawData);
 
 void encodeMessage(messageData dat, char **messageEncoded);
 
+serverQuery decodeMessageServer(char *rawData);
+
+void encodeMessageServer(serverQuery dat, char **messageEncoded);
 
 #endif /* Decoders_h */

@@ -84,9 +84,9 @@ datagram recvData(struct _Connection *self){
     }
     
     // Verifica o que veio na mensagem
-    for(int i=0; i<sizeNum; i++){
-        printf("%c ",rawData[i]);
-    }
+    //for(int i=0; i<sizeNum; i++){
+    //    printf("%c ",rawData[i]);
+    //}
     
     //Monta a struct para enviar como retorno da funcao
     datagram dat;

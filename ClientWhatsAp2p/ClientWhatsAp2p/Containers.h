@@ -31,7 +31,7 @@
 
 // Estruturas para guradar dados do servidor
 typedef struct _serverParam{
-    short port;
+    short port, listenPort;
     char *hostName;
 }serverParam;
 
@@ -46,7 +46,9 @@ typedef enum _ProtocolCommand{
     MESSAGE,
     PING,
     SERVER_QUERY,
-    PEER_CONNECTED
+    PEER_CONNECTED,
+    PEER_ONLINE,
+    PEER_OFFLINE
 }ProtocolCommand;
 
 typedef struct _socketData{
