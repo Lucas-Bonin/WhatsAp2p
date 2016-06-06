@@ -84,7 +84,7 @@ typedef struct _contactDTO{
     char group[16];
     int isGroup; // Verifica se struct eh um grupo ou uma pessoa
     int totalNumbers;
-    int numbers[MAX_GROUP_LENGTH];
+    long int numbers[MAX_GROUP_LENGTH];
 }contactDTO;
 
 // Estrutura para comunicacao com o servidor

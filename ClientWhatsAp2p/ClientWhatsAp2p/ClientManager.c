@@ -92,9 +92,9 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
 //Cria imagem e texto
 void createTextMessage(char **data){
     printf("Digite o texto\n");
-    char *text; //TODO: Não esta faltando Malloc?
+    char *text = (char*) malloc(300);
     getchar();
-    gets(text); //TODO: trocar por fgets ou outra função segura
+    fgets(text,300,stdin); //TODO: trocar por fgets ou outra função segura
     *data = text;
 }
 
@@ -115,7 +115,45 @@ void createGroup(){
 
 }
 
-void sendDataToPeer(){
+datagram queryToServer(const char number[]) { //, short *port, const unsigned int *ip) {
+    datagram dat;
+    char *messageEncoded;
+    serverQuery query;
+    dat.op = PING;
+    query.port = 0;
+    strcpy(query.number,number);
+    encodeMessageServer(query, &messageEncoded);
+    dat.size = HEADER_PARAM_MESSAGE * 3;
+    dat.data = messageEncoded;
+    return dat;
+}
+
+serverQuery checkPeerOnline(short serverPort, char *serverHostName, const char wantedNumber[]) {
+    Connection servConnection;
+
+    datagram dta = queryToServer(wantedNumber);
+    int servSocket = makeClientSocket(serverPort, serverHostName);
+    newConnection(&servConnection, servSocket);
+    //envia para o servidor o ping
+    servConnection.sendData(&servConnection,dta);
+    //resposta do ping
+    dta = servConnection.recvData(&servConnection);
+    servConnection.closeConnection(&servConnection);
+
+    if (dta.op == PEER_ONLINE) {
+        serverQuery query = decodeMessageServer(dta.data);
+        printf("Peer %s em %s : %d\n",query.number,query.ip,ntohs(query.port));
+        return query;
+    } else if (dta.op == PEER_OFFLINE)
+        printf("O peer esta offline :(\n");
+    else
+        printf("RESPOSTA PARA: checkPeerOnline INVALIDA\n");
+    serverQuery query;
+    query.number[0] = '\0';
+    return query;
+}
+
+void sendDataToPeer(short serverPort, char *serverHostName){
     contactDTO contact;
     contact = findContactMenu();
 
@@ -146,8 +184,12 @@ void sendDataToPeer(){
     short port;
     char *host;
     for (int i=0; i<contact.totalNumbers; i++) {
-
-        if(1){ // TODO: Verifica se contato esta online e recebe porta e IP
+        char strnum[33];
+        snprintf(strnum,33,"%ld",contact.numbers[i]);
+        serverQuery query = checkPeerOnline(serverPort,serverHostName,strnum);
+        if(query.number[0] != '\0'){ // TODO: Verifica se contato esta online e recebe porta e IP
+            port = query.port;
+            host = query.ip;
             int newSocket;
             newSocket = makeClientSocket(port, host);
 
@@ -155,28 +197,15 @@ void sendDataToPeer(){
             newConnection(&peerConection, newSocket);
 
             peerConection.sendData(&peerConection,encMessage);
-            printf("Mensagem enviada com sucesso para o numero: %d\n",contact.numbers[i]);
+            printf("Mensagem enviada com sucesso para o numero: %ld\n",contact.numbers[i]);
 
         }else{
-            printf("Contato: %d esta offline\n",contact.numbers[i]);
+            printf("Contato: %ld esta offline\n",contact.numbers[i]);
         }
     }
 
 }
 
-
-datagram queryToServer(const char number[]) { //, short *port, const unsigned int *ip) {
-    datagram dat;
-    char *messageEncoded;
-    serverQuery query;
-    dat.op = PING;
-    query.port = 0;
-    strcpy(query.number,number);
-    encodeMessageServer(query, &messageEncoded);
-    dat.size = HEADER_PARAM_MESSAGE * 3;
-    dat.data = messageEncoded;
-    return dat;
-}
 
 int sayHiToServer(short port, char *hostName, short listenPort, const char number[]) {
     int servSocket;
@@ -206,28 +235,6 @@ int sayHiToServer(short port, char *hostName, short listenPort, const char numbe
     return 1;
 }
 
-int checkPeerOnline(short serverPort, char *serverHostName, const char wantedNumber[]) {
-    Connection servConnection;
-
-    datagram dta = queryToServer(wantedNumber);
-    int servSocket = makeClientSocket(serverPort, serverHostName);
-    newConnection(&servConnection, servSocket);
-    //envia para o servidor o ping
-    servConnection.sendData(&servConnection,dta);
-    //resposta do ping
-    dta = servConnection.recvData(&servConnection);
-    servConnection.closeConnection(&servConnection);
-
-    if (dta.op == PEER_ONLINE) {
-        serverQuery query = decodeMessageServer(dta.data);
-        printf("Peer %s em %s : %d\n",query.number,query.ip,ntohs(query.port));
-        return 1;
-    } else if (dta.op == PEER_OFFLINE)
-        printf("O peer esta offline :(\n");
-    else
-        printf("RESPOSTA PARA: checkPeerOnline INVALIDA\n");
-    return 0;
-}
 
 void requestLoop(short port, char *hostName, short listenPort){
     printf("Entrou no Request Loop\n");
@@ -246,7 +253,7 @@ void requestLoop(short port, char *hostName, short listenPort){
 //    checkPeerOnline(port,hostName,num);
 
     OptionsMainMenu opt;
-    
+
     do{
 
         opt = mainMenu();
@@ -254,7 +261,7 @@ void requestLoop(short port, char *hostName, short listenPort){
         switch (opt) {
             case SEND_MESSAGE:
                 printf("Opcao Mandar mensagem\n");
-                sendDataToPeer();
+                sendDataToPeer(port,hostName);
                 break;
             case CREATE_NEW_CONTACT:
                 printf("Opcao criar contato\n");
