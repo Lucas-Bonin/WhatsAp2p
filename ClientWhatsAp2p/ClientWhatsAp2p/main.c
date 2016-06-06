@@ -39,7 +39,7 @@ void* peerFunc(void *param){
 
 int main(int argc, const char * argv[]){
     /* initialize random seed: */
-    srand (time(NULL));
+    srand ((unsigned int)time(NULL));
 
     //Recebendo parametros
     unsigned short port;

@@ -21,6 +21,7 @@
 #include "PeerConnection.h"
 #include "ClientInterface.h"
 #include "Decoders.h"
+#include "ContactDAO.h"
 
 void requestLoop(short port, char *hostName, short listenPort);
 

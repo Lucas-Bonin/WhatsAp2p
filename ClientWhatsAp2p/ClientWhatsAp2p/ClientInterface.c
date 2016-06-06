@@ -28,7 +28,7 @@ OptionsMainMenu mainMenu(){
     int answ;
     
     while(1){
-        printf ("1 - cadastrar mensagem\n2 - ler mensagem\n3 - apagar mensagem\n4 - sair da aplicacao\n" );
+        printf ("1 - Enviar mensagem\n2 - Cadastrar novo grupo\n3 - Cadastrar novo contato\n4 - sair da aplicacao\n" );
         scanf("%d", &answ);
         
         if (checkOption(answ, 4) == 0){
@@ -42,8 +42,14 @@ OptionsMainMenu mainMenu(){
         case 1:
             opt = SEND_MESSAGE;
             break;
-        default:
+        case 2:
             opt = CREATE_NEW_GROUP;
+            break;
+        case 3:
+            opt = CREATE_NEW_CONTACT;
+            break;
+        default:
+            opt = QUIT;
             
     }
     
@@ -81,6 +87,8 @@ void showNewMessage(messageData dat){
 // Retorna uma struct que identifica um grupo ou pessoa
 contactDTO findContactMenu(){
     int answ;
+    
+    // TODO: Receber todos os contatos da base de dados
     contactDTO contacts[MAX_DATABASE_LENGTH];
 
     
@@ -88,7 +96,6 @@ contactDTO findContactMenu(){
         printf("\n======================================================================\n");
         printf("Para quem a mensagem sera mandada ?\n");
         printf("Digite o numero correspondente ao contato");
-        //TODO: Chama funcao que retorna um vetor de structs do tipo contactDTO
         
         // Tamanho do loop sera o mesmo que o retorno da funcao que faz o load dos contatos
         for (int i=0; i<1; i++) {

@@ -38,6 +38,7 @@ typedef struct _serverParam{
 // Enums para tratamento de mensagens
 typedef enum _OptionsMainMenu{
     CREATE_NEW_GROUP,
+    CREATE_NEW_CONTACT,
     SEND_MESSAGE,
     QUIT
 }OptionsMainMenu;

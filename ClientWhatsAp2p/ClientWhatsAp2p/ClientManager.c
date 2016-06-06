@@ -142,8 +142,6 @@ void sendDataToPeer(){
     datagram encMessage = encodeMessageToPeer(myNumber, contact.group, type, messageData);
 
 
-
-
     //Envia mensagem para o contato
     short port;
     char *host;
@@ -183,7 +181,6 @@ datagram queryToServer(const char number[]) { //, short *port, const unsigned in
 int sayHiToServer(short port, char *hostName, short listenPort, const char number[]) {
     int servSocket;
     Connection servConnection;
-    OptionsMainMenu opt;
 
     // Se conecta com o servidor
     servSocket = makeClientSocket(port, hostName);
@@ -223,7 +220,7 @@ int checkPeerOnline(short serverPort, char *serverHostName, const char wantedNum
 
     if (dta.op == PEER_ONLINE) {
         serverQuery query = decodeMessageServer(dta.data);
-        printf("Peer %s em %u : %d\n",query.number,query.ip,ntohs(query.port));
+        printf("Peer %s em %s : %d\n",query.number,query.ip,ntohs(query.port));
         return 1;
     } else if (dta.op == PEER_OFFLINE)
         printf("O peer esta offline :(\n");
@@ -242,16 +239,14 @@ void requestLoop(short port, char *hostName, short listenPort){
     //funcao que envia para o servidor dados para conexão neste peer
     sayHiToServer(port,hostName,listenPort,num);
 
-    int servSocket;
-    Connection servConnection;
-    OptionsMainMenu opt;
-    datagram dta;
 
 //    printf("Digite o numero de quem voce deseja saber se esta online\n");
 //    scanf("%s",num);
 //
 //    checkPeerOnline(port,hostName,num);
 
+    OptionsMainMenu opt;
+    
     do{
 
         opt = mainMenu();
@@ -261,11 +256,17 @@ void requestLoop(short port, char *hostName, short listenPort){
                 printf("Opcao Mandar mensagem\n");
                 sendDataToPeer();
                 break;
+            case CREATE_NEW_CONTACT:
+                printf("Opcao criar contato\n");
+                break;
+            case CREATE_NEW_GROUP:
+                printf("Opcao criar grupo\n");
+                break;
             case QUIT:
                 printf("Sair da aplicacao");
                 break;
             default:
-                printf("Opcao default");
+                printf("Opcao invalida");
                 break;
         }
 
