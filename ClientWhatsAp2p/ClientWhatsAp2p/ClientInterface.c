@@ -13,7 +13,6 @@
 
 // Verifica se usuario escolheu uma opcao valida
 int checkOption(int input, int maxNum){
-
     if (input > maxNum || input <= 0)
         return 0;
 
@@ -85,27 +84,24 @@ void showNewMessage(messageData dat){
 }
 
 // Retorna uma struct que identifica um grupo ou pessoa
-contactDTO findContactMenu(){
+contactDTO findContactMenu(contactDTO contacts[MAX_DATABASE_LENGTH], int numContatos){
     int answ;
-
-    // TODO: Receber todos os contatos da base de dados
-    contactDTO contacts[MAX_DATABASE_LENGTH];
 
 
     while(1){
         printf("\n======================================================================\n");
         printf("Para quem a mensagem sera mandada ?\n");
-        printf("Digite o numero correspondente ao contato");
+        printf("Digite o numero correspondente ao contato\n");
 
         // Tamanho do loop sera o mesmo que o retorno da funcao que faz o load dos contatos
-        for (int i=0; i<1; i++) {
-            printf("INDEX: %d\n",i+1);
+        for (int i=0; i<numContatos; i++) {
+            printf("INDEX: %d. ",i);
             showContact(contacts[i]);
         }
 
         scanf("%d",&answ);
 
-        while(checkOption(answ, 1)){ //tamanho maximo sera igual ao retorno da funcao
+        while(checkOption(answ,numContatos)){ //tamanho maximo sera igual ao retorno da funcao
             printf("Opcao invalida\n");
             scanf("%d",&answ);
         }
@@ -113,11 +109,12 @@ contactDTO findContactMenu(){
         printf("Tem certeza que quer escolher esse numero\n1 - Sim\n2 - Nao\n");
         showContact(contacts[answ]);
 
+        int confirm;
         do{
-            scanf("%d",&answ);
-        }while(answ != 1 && answ != 0);
+            scanf("%d",&confirm);
+        }while(confirm != 1 && confirm != 2);
 
-        if(answ == 1)
+        if(confirm == 1)
             break;
     }
 

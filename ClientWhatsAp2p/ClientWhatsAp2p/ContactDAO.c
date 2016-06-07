@@ -27,11 +27,11 @@ void removeNewLine(char buff[]) {
 //preenche a lista com os contatos carregados do peer. retorna o numero de contatos carregados
 int readData(long int mynum, contactDTO contatos[MAX_DATABASE_LENGTH]) {
     FILE *arq;
-    
+
     char buff[40];
     snprintf(buff,16,"%ld",mynum);
     strcat(buff,".txt");
-    
+
     arq = fopen(buff, "r");
     printf("Abrindo arquivo\n");
     if(arq == NULL) {
@@ -49,17 +49,17 @@ int readData(long int mynum, contactDTO contatos[MAX_DATABASE_LENGTH]) {
     succRead(fgets(buff,HEADER_PARAM_MESSAGE,arq));
     long int readnum = atol(buff);
     printf("Lido do arquivo: Telefone deste peer: %ld\n",readnum);
-    
+
     int grupos, membro;
     for (grupos=0;grupos<MAX_DATABASE_LENGTH;grupos++) {
         if (fgets(buff,HEADER_PARAM_MESSAGE,arq) == NULL)   //fim do arquivo
             break;
-        
+
         //se o arquivo n acabou, a linha lida é um nome de grupo
         removeNewLine(buff);
         strcpy(contatos[grupos].group,buff);
         printf("grupo %d: nome: %s\n",grupos+1,contatos[grupos].group);
-        
+
         //extrai os membro do grupo
         for (membro = 0; membro < MAX_GROUP_LENGTH;membro++) {
             succRead(fgets(buff,HEADER_PARAM_MESSAGE,arq));
@@ -67,14 +67,14 @@ int readData(long int mynum, contactDTO contatos[MAX_DATABASE_LENGTH]) {
                 break;
             }
             contatos[grupos].numbers[membro] = (int)atol(buff);
-            printf("Lido telefone %d\n",contatos[grupos].numbers[membro]);
+            printf("Lido telefone %ld\n",contatos[grupos].numbers[membro]);
         }
         contatos[grupos].totalNumbers = membro;
         contatos[grupos].isGroup = (membro != 1);
         printf("Fim do grupo. O grupo tem %d membros\n",membro);
     }
-    
-    
+
+
     fclose(arq);
     return grupos;
 }
@@ -87,7 +87,7 @@ int writeData(long int mynum, const contactDTO contatos[MAX_DATABASE_LENGTH], in
     snprintf(buff,16,"%ld",mynum);
     strcat(buff,".txt");
     arq = fopen(buff, "w");
-    
+
     printf("Abrindo arquivo %s para escrita\n",buff);
     if(arq == NULL) {
         printf("Erro ao criar o arquivo\n");
@@ -101,7 +101,7 @@ int writeData(long int mynum, const contactDTO contatos[MAX_DATABASE_LENGTH], in
      Grupos têm a seguinte estrutura: nome do grupo na primeira linha
      um numero de telefone por linha. lista terminada por uma linha com apenas#
      */
-    
+
     snprintf(buff,16,"%ld",mynum);
     fputs(buff,arq);
     fputs("\n",arq);
@@ -111,15 +111,15 @@ int writeData(long int mynum, const contactDTO contatos[MAX_DATABASE_LENGTH], in
         fputs("\n",arq);
         //extrai os membro do grupo
         for (membro = 0; membro < contatos[grupos].totalNumbers ;membro++) {
-            snprintf(buff,16,"%d",contatos[grupos].numbers[membro]);
+            snprintf(buff,16,"%ld",contatos[grupos].numbers[membro]);
             fputs(buff,arq);
             fputs("\n",arq);
         }
         fputs("#\n",arq);
     }
-    
-    
+
+
     fclose(arq);
     return 1;
-    
+
 }

@@ -7,6 +7,7 @@
 //
 
 #include "ClientManager.h"
+#include "ContactDAO.h"
 #include <arpa/inet.h> //inet_ntoa()
 
 // Cria um socket para se comunicar com o servidor
@@ -95,6 +96,7 @@ void createTextMessage(char **data){
     char *text = (char*) malloc(300);
     getchar();
     fgets(text,300,stdin); //TODO: trocar por fgets ou outra função segura
+    printf("Mensagem: %s\n",text);
     *data = text;
 }
 
@@ -153,10 +155,10 @@ serverQuery checkPeerOnline(short serverPort, char *serverHostName, const char w
     return query;
 }
 
-void sendDataToPeer(short serverPort, char *serverHostName){
+void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[MAX_DATABASE_LENGTH], int numContatos){
     contactDTO contact;
-    contact = findContactMenu();
-
+    contact = findContactMenu(contacts,numContatos);
+    printf("Contato num: %ld\n",contact.numbers[0]);
     int answ;
     printf("Qual o tipo da mensagem?\n1 - Texto\n2 - Imagem\n");
     do{
@@ -175,7 +177,7 @@ void sendDataToPeer(short serverPort, char *serverHostName){
     }
 
     // TODO: Pegar o meu numero de algum lugar salvo.
-    char myNumber[HEADER_PARAM_MESSAGE];
+    char myNumber[HEADER_PARAM_MESSAGE] = "123456";
 
     datagram encMessage = encodeMessageToPeer(myNumber, contact.group, type, messageData);
 
@@ -188,7 +190,7 @@ void sendDataToPeer(short serverPort, char *serverHostName){
         snprintf(strnum,33,"%ld",contact.numbers[i]);
         serverQuery query = checkPeerOnline(serverPort,serverHostName,strnum);
         if(query.number[0] != '\0'){ // TODO: Verifica se contato esta online e recebe porta e IP
-            port = query.port;
+            port = ntohs(query.port);
             host = query.ip;
             int newSocket;
             newSocket = makeClientSocket(port, host);
@@ -246,6 +248,9 @@ void requestLoop(short port, char *hostName, short listenPort){
     //funcao que envia para o servidor dados para conexão neste peer
     sayHiToServer(port,hostName,listenPort,num);
 
+    //Recupera os contatos do arquivo
+    contactDTO contacts[MAX_DATABASE_LENGTH];
+    int numContatos = readData(atol(num),contacts);
 
 //    printf("Digite o numero de quem voce deseja saber se esta online\n");
 //    scanf("%s",num);
@@ -261,7 +266,7 @@ void requestLoop(short port, char *hostName, short listenPort){
         switch (opt) {
             case SEND_MESSAGE:
                 printf("Opcao Mandar mensagem\n");
-                sendDataToPeer(port,hostName);
+                sendDataToPeer(port,hostName,contacts,numContatos);
                 break;
             case CREATE_NEW_CONTACT:
                 printf("Opcao criar contato\n");

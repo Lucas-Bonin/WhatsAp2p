@@ -16,7 +16,7 @@
 
 OptionsMainMenu mainMenu();
 void showNewMessage(messageData dat);
-contactDTO findContactMenu();
+contactDTO findContactMenu(contactDTO contacts[MAX_DATABASE_LENGTH], int numContatos);
 
 
 #endif /* ClientInterface_h */

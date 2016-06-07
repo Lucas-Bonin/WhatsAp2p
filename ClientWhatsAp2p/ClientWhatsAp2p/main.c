@@ -18,13 +18,10 @@
 
 // Thread para peer
 
-void* interFunc(void *param){
+void interFunc(serverParam *sParam){
     printf("Entrou no thread de interface\n");
 
-    serverParam *sParam = (serverParam*) param;
-
     requestLoop(sParam->port, sParam->hostName, sParam->listenPort); // Quando servidor estiver funcionando descomentar essa linha
-    return NULL;
 }
 
 void* peerFunc(void *param){
@@ -75,12 +72,7 @@ int main(int argc, const char * argv[]){
     pthread_create(&peerThread, NULL, &peerFunc, &portParam);
 
     // Thread para interface
-    pthread_t interThread;
-    pthread_create(&interThread, NULL, &interFunc, &param);
-
-
-    while(1){
-    }
+    interFunc(&param);
 
     return 0;
 }
