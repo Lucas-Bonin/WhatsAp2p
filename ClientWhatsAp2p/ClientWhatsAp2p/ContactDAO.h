@@ -16,5 +16,8 @@
 int readData(long int mynum, contactDTO contatos[MAX_DATABASE_LENGTH]);
 
 
+int writeData(long int mynum, const contactDTO contatos[MAX_DATABASE_LENGTH], int numGroups);
+
+void removeNewLine(char buff[]);
 
 #endif /* ContactDAO_h */
