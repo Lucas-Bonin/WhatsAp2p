@@ -79,7 +79,7 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
     // Transforma struct de mensagem em uma string
     char *encodedMessage;
     int lengthEncMessage = encodeMessage(mDat, &encodedMessage);
-    
+
 //    printf("\nVOLTANDO DO ENCODE MESSAGE:\n\n");
 //    for (int i=0; i<(mDat.size + HEADER_MESSAGE_LENGHT + 6); i++) {
 //        printf("%c ",encodedMessage[i]);
@@ -114,27 +114,6 @@ void createImageMessage(char **data){
     exit(0);
 }
 
-
-// TODO: Fazer as 3 funcoes muthafocka do cliente
-
-contactDTO addContact() {
-    contactDTO cont;
-    printf("Qual o nome do seu amiguinho? (ate 16 caracteres\n");
-    getchar();
-    fgets(cont.group,16,stdin);
-    removeNewLine(cont.group);
-    printf("E o numero de telefone?\n");
-    scanf("%ld",&cont.numbers[0]);
-    cont.isGroup = 0; // Verifica se struct eh um grupo ou uma pessoa
-    cont.totalNumbers = 1;
-    return cont;
-}
-
-//contactDTO createGroup(){
-//    contactDTO cont;
-//    cont.totalNumbers = 0;
-//    
-//}
 
 datagram queryToServer(const char number[]) { //, short *port, const unsigned int *ip) {
     datagram dat;
@@ -216,7 +195,7 @@ void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[
 
             Connection peerConection;
             newConnection(&peerConection, newSocket);
-            
+
             peerConection.sendData(&peerConection,encMessage);
             printf("Mensagem enviada com sucesso para o numero: %ld\n",contact.numbers[i]);
 
@@ -277,11 +256,11 @@ void requestLoop(short port, char *hostName, short listenPort){
 //    checkPeerOnline(port,hostName,num);
 
     OptionsMainMenu opt;
-    
+
     do{
-        
+
         opt = mainMenu();
-        
+
         switch (opt) {
             case SEND_MESSAGE:
                 printf("Opcao Mandar mensagem\n");
@@ -295,6 +274,9 @@ void requestLoop(short port, char *hostName, short listenPort){
                 break;
             case CREATE_NEW_GROUP:
                 printf("Opcao criar grupo\n");
+                contacts[numContatos] = createGroup(contacts,numContatos);
+                if (contacts[numContatos].totalNumbers > 0)  //a funcao retorna 0 contatos caso tenha sido cancelada
+                    numContatos++;
                 break;
             case QUIT:
                 printf("Sair da aplicacao");
@@ -303,9 +285,9 @@ void requestLoop(short port, char *hostName, short listenPort){
                 printf("Opcao invalida");
                 break;
         }
-        
+
     }while((opt != QUIT));
-    
+
     //salva os contatos antes de sair;
     writeData(atol(num),contacts,numContatos);
 }

@@ -121,4 +121,48 @@ contactDTO findContactMenu(contactDTO contacts[MAX_DATABASE_LENGTH], int numCont
     return contacts[answ];
 
 }
+
+contactDTO addContact() {
+    contactDTO cont;
+    printf("Qual o nome do seu amiguinho? (ate 16 caracteres\n");
+    getchar();
+    fgets(cont.group,16,stdin);
+    removeNewLine(cont.group);
+    printf("E o numero de telefone?\n");
+    scanf("%ld",&cont.numbers[0]);
+    cont.isGroup = 0; // Verifica se struct eh um grupo ou uma pessoa
+    cont.totalNumbers = 1;
+    return cont;
+}
+
+contactDTO createGroup(const contactDTO contactList[], const int numContatos) {
+    contactDTO cont;
+    cont.totalNumbers = 0;
+    printf("Qual o nome da nova panelinha? (ate 16 caracteres\n");
+    getchar();
+    fgets(cont.group,16,stdin);
+    removeNewLine(cont.group);
+
+    int opt;
+    printf("OK. selecione os contatos que serao adicionados ao grupo.\n");
+    printf("Se um grupo for selecionado todos os seus membros serao adicionados ao novo grupo\n");
+    do {
+        printf("INDEX: 0. Finalizar\n");
+        for (int i=0; i<numContatos; i++) {
+            printf("INDEX: %d. ",i+1);
+            showContact(contactList[i]);
+        }
+        scanf("%d",&opt);
+        if (opt > 0 && opt <= numContatos) {
+            for (int j=0;j<contactList[opt-1].totalNumbers ; j++) { //copia todos os numeros do contato escolhido
+                //printf("adicionando contato num %d tel %ld\n",cont.totalNumbers,contactList[opt-1].numbers[j]);
+                cont.numbers[cont.totalNumbers++] = contactList[opt-1].numbers[j];
+            }
+        }
+    } while (opt != 0);
+    if (cont.totalNumbers >= 2)
+        cont.isGroup = 1;
+    else cont.isGroup = 0;
+    return cont;
+}
 //
