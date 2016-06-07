@@ -74,7 +74,7 @@ void showNewMessage(messageData dat){
     printf("\n======================================================================\n");
     printf("Nova Mensagem\n\n");
     printf("Numero: %s\n",dat.number);
-    printf("Grupo: %s\n",(dat.isGroup == 1) ? dat.group : "SEM GRUPO");
+    printf("Grupo: %s\n",(dat.isGroup == 1) ? dat.group : "");
     if(dat.type == TEXT)
         printf("\n%s\n",dat.data);
     else
