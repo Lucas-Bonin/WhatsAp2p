@@ -78,13 +78,22 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
 
     // Transforma struct de mensagem em uma string
     char *encodedMessage;
-    encodeMessage(mDat, &encodedMessage);
+    int lengthEncMessage = encodeMessage(mDat, &encodedMessage);
+    
+//    printf("\nVOLTANDO DO ENCODE MESSAGE:\n\n");
+//    for (int i=0; i<(mDat.size + HEADER_MESSAGE_LENGHT + 6); i++) {
+//        printf("%c ",encodedMessage[i]);
+//    }
+//    printf("\n\n\n");
+
 
     //Cria datagrama
     datagram dat;
 
     dat.op = MESSAGE;
-    dat.size = mDat.size + HEADER_MESSAGE_LENGHT;
+  //  dat.size = mDat.size + HEADER_MESSAGE_LENGHT;
+    dat.size = lengthEncMessage;
+
     dat.data = encodedMessage;
 
     return dat;
@@ -197,7 +206,7 @@ void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[
 
             Connection peerConection;
             newConnection(&peerConection, newSocket);
-
+            
             peerConection.sendData(&peerConection,encMessage);
             printf("Mensagem enviada com sucesso para o numero: %ld\n",contact.numbers[i]);
 

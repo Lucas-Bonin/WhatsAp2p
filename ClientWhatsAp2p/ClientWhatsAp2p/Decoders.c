@@ -59,19 +59,25 @@ messageData decodeMessage(char *rawData){
     return dat;
 }
 
-void encodeMessage(messageData dat, char **messageEncoded){
+//Funcao retorna tamanho da mensagem codificada
+
+int encodeMessage(messageData dat, char **messageEncoded){
 
     // Codificar header
     char size[HEADER_PARAM_MESSAGE];
     char fileType[HEADER_PARAM_MESSAGE];
     char flagGroup[FLAG_MESSAGE];
+    
 
-    sprintf(fileType, "%d", dat.type);
-    sprintf(flagGroup, "%d", dat.isGroup);
-    sprintf(size, "%d",dat.size);
-
+    snprintf(fileType, HEADER_PARAM_MESSAGE, "%d", dat.type);
+    snprintf(flagGroup, HEADER_PARAM_MESSAGE, "%d", dat.isGroup);
+    snprintf(size, HEADER_PARAM_MESSAGE, "%d",dat.size);
+    
+    
+    int totalLength = sizeof(flagGroup) + sizeof(fileType) + sizeof(dat.number) + sizeof(dat.group) + sizeof(size) + dat.size;
+    
     // Aloca memoria necessaria para criar a mensagem
-    char *message = (char*) malloc((HEADER_MESSAGE_LENGHT + dat.size) * sizeof(char));
+    char *message = (char*) malloc((totalLength) * sizeof(char));
 
     long offset = 0;
     memcpy(message + offset, flagGroup, sizeof(flagGroup));
@@ -95,11 +101,13 @@ void encodeMessage(messageData dat, char **messageEncoded){
 //    printf("\nTESTE encodeMessage\n");
 //    char t[100];
 //    memcpy(t,message,100);
-//    for (int i=0; i<100; i++) {
+//    for (int i=0; i<(totalLength); i++) {
 //        printf("%c ",t[i]);
 //    }
 
     *messageEncoded = message;
+    
+    return totalLength;
 
 }
 

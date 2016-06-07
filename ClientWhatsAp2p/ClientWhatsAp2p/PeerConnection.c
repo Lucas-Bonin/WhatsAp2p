@@ -31,7 +31,7 @@ void encodeData(datagram dat, char **dataEncoded){
     memcpy(datagram, size, sizeof(size));
     memcpy((datagram + sizeof(size)), command, sizeof(command));
     memcpy((datagram + HEADER_DATAGRAM_LENGTH), dat.data, dat.size);
-
+        
     *dataEncoded = datagram;
 }
 
@@ -83,10 +83,10 @@ datagram recvData(struct _Connection *self){
         partialData += currentData;
     }
 
-    // Verifica o que veio na mensagem
-    //for(int i=0; i<sizeNum; i++){
-    //    printf("%c ",rawData[i]);
-    //}
+     //Verifica o que veio na mensagem
+//    for(int i=0; i<(sizeNum + HEADER_DATAGRAM_LENGTH); i++){
+//        printf("%c ",rawData[i]);
+//    }
 
     //Monta a struct para enviar como retorno da funcao
     datagram dat;
@@ -109,7 +109,15 @@ void sendData(Connection *self, datagram data){
     long totalDataSize = (data.size + HEADER_DATAGRAM_LENGTH);
     long currentDataSent = 0;
     long totalDataSent = 0;
+    
+//    
+//    printf("\n\n\n");
+//    for (int i=0; i<(HEADER_DATAGRAM_LENGTH + data.size); i++) {
+//        printf("%c ",dataEncoded[i]);
+//    }
+//    printf("\n\n\n");
 
+    
     while(totalDataSent < totalDataSize){
         currentDataSent = send(self->socket, (dataEncoded + totalDataSent), (totalDataSize - totalDataSent), 0);
         if (currentDataSent < 0){

@@ -16,7 +16,7 @@
 #define HEADER_PARAM_LENGTH 16
 
 // Constantes para Mensagem
-#define HEADER_MESSAGE_LENGHT 70
+//#define HEADER_MESSAGE_LENGHT 70
 #define HEADER_PARAM_MESSAGE 16
 #define FLAG_MESSAGE 16
 

@@ -19,7 +19,7 @@
 
 messageData decodeMessage(char *rawData);
 
-void encodeMessage(messageData dat, char **messageEncoded);
+int encodeMessage(messageData dat, char **messageEncoded);
 
 serverQuery decodeMessageServer(char *rawData);
 

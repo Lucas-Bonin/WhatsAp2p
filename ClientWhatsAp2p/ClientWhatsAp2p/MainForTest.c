@@ -49,7 +49,8 @@ datagram encodeMessageToPeerTest(char *myNumber, char* groupName, MessageType ty
     datagram dat;
     
     dat.op = MESSAGE;
-    dat.size = mDat.size + HEADER_MESSAGE_LENGHT;
+   // dat.size = mDat.size + HEADER_MESSAGE_LENGHT;
+    dat.size = 150;
     dat.data = encodedMessage;
     
     return dat;
