@@ -119,7 +119,7 @@ void listFiles(char img[]){
     if (d) {
         while ((dir = readdir(d)) != NULL) {
             size = strlen(dir->d_name);
-            if (strcmp(dir->d_name+size-3,"jpg") == 0 || strcmp(dir->d_name+size-3,"png") == 0)
+            //if (strcmp(dir->d_name+size-3,"jpg") == 0 || strcmp(dir->d_name+size-3,"png") == 0)
                 printf("%d - %s\n",i,dir->d_name);
         }
         closedir(d);
@@ -138,7 +138,10 @@ int createImageMessage(char **data){
     printf("img nome %s\n",imgNome);
 
     FILE * img = fopen(imgNome, "r");
-    if (img == NULL) return 0;
+    if (img == NULL) {
+        printf("nao deu pra carregar\n");
+        return 0;
+    }
     fseek(img, 0, SEEK_END);
     long int size = ftell(img);
     fseek(img, 0, SEEK_SET);
@@ -220,7 +223,7 @@ void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[
     if (contact.isGroup == 1){
         strncpy(group, contact.group,sizeof(group));
     }
-    datagram encMessage = encodeMessageToPeer(myNum, group, type, messageData);
+    datagram encMessage = encodeMessageToPeer(myNum, group, type, messageData, tamImg);
 
 
     //Envia mensagem para o contato

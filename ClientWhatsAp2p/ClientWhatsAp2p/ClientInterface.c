@@ -113,7 +113,7 @@ contactDTO findContactMenu(contactDTO contacts[MAX_DATABASE_LENGTH], int numCont
 
         scanf("%d",&answ);
 
-        while(!checkOption(answ,numContatos)){ //tamanho maximo sera igual ao retorno da funcao
+        while(!checkOption(answ,numContatos+1)){ //tamanho maximo sera igual ao retorno da funcao
             printf("Opcao invalida\n");
             scanf("%d",&answ);
         }
