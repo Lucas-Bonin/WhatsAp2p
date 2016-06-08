@@ -9,6 +9,8 @@
 #include "ClientManager.h"
 #include "ContactDAO.h"
 #include <arpa/inet.h> //inet_ntoa()
+#include <unistd.h>
+#include <dirent.h>
 
 // Cria um socket para se comunicar com o servidor
 int makeClientSocket(short port, char *hostName){
@@ -47,7 +49,7 @@ int makeClientSocket(short port, char *hostName){
 }
 
 // Codifica mensagem
-datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, char *message){
+datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, char *message, int tamImg){
     messageData mDat;
     strncpy(mDat.number,myNumber,sizeof(mDat.number));
 
@@ -67,8 +69,7 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
             mDat.size = (int)strlen(message);
             break;
         case IMAGE:
-            printf("TAMANHO DE IMAGEM NAO DEFINIDO, ENCERRANDO PROGRAMA");
-            exit(0);
+            mDat.size = tamImg;
             break;
         default:
             printf("TIPO DE DADO DA MENSAGEM DESCONHECIDO, ENCERRANDO PROGRAMA");
@@ -102,16 +103,56 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
 //Cria imagem e texto
 void createTextMessage(char **data){
     printf("Digite o texto\n");
-    char *text = (char*) malloc(300);
+    char *text = (char*) malloc(1200);
     getchar();
-    fgets(text,300,stdin); //TODO: trocar por fgets ou outra função segura
+    fgets(text,1200,stdin); //TODO: trocar por fgets ou outra função segura
     printf("Mensagem: %s\n",text);
     *data = text;
 }
 
-void createImageMessage(char **data){
-    printf("IMPOSSIVEL CRIAR IMAGE, ENCERRANDO O PROGRAMA\n");
-    exit(0);
+void listFiles(char img[]){
+    DIR *d;
+    d = opendir("imagens");
+
+    struct dirent *dir;
+    int i = 1, size;
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            size = strlen(dir->d_name);
+            if (strcmp(dir->d_name+size-3,"jpg") == 0 || strcmp(dir->d_name+size-3,"png") == 0)
+                printf("%d - %s\n",i,dir->d_name);
+        }
+        closedir(d);
+    }
+    printf("ESCOLHA O ARQUIVO QUE DESEJA ENVIAR\n");
+    char tmp[30];
+    scanf("%s",tmp);
+    strcpy(img,"imagens/");
+    strcat(img,tmp);
+
+}
+
+int createImageMessage(char **data){
+    char imgNome[50];
+    listFiles(imgNome);
+    printf("img nome %s\n",imgNome);
+
+    FILE * img = fopen(imgNome, "r");
+    if (img == NULL) return 0;
+    fseek(img, 0, SEEK_END);
+    long int size = ftell(img);
+    fseek(img, 0, SEEK_SET);
+
+    *data = (char*) malloc( (size+50)*sizeof(char));
+    if (!(*data)) { printf("erro ao iniciar o buffer\n"); return 0; }
+    memcpy(*data, imgNome, 50);
+    int read = 0;
+    while (read < size) {
+        read += (int)fread( (*data)+read+50, 1,1024, img);
+        printf("Lendo imagens read...%d bytes\n",read);
+    }
+    printf("Done. lidos %d...tamanho %d\n",read,size);
+    return size+50;
 }
 
 
@@ -157,7 +198,7 @@ void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[
     contactDTO contact;
     contact = findContactMenu(contacts,numContatos);
     printf("Contato num: %ld\n",contact.numbers[0]);
-    int answ;
+    int answ, tamImg;
     printf("Qual o tipo da mensagem?\n1 - Texto\n2 - Imagem\n");
     do{
         scanf("%d",&answ);
@@ -170,14 +211,14 @@ void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[
         createTextMessage(&messageData);
         type = TEXT;
     }else{
-        createImageMessage(&messageData);
+        tamImg = createImageMessage(&messageData);
         type = IMAGE;
     }
 
     // TODO: Pegar o meu numero de algum lugar salvo.
     char myNumber[HEADER_PARAM_MESSAGE] = "123456";
 
-    datagram encMessage = encodeMessageToPeer(myNumber, contact.group, type, messageData);
+    datagram encMessage = encodeMessageToPeer(myNumber, contact.group, type, messageData, tamImg);
 
 
     //Envia mensagem para o contato

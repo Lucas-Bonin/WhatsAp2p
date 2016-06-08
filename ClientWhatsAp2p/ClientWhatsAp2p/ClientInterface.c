@@ -77,8 +77,20 @@ void showNewMessage(messageData dat){
     printf("Grupo: %s\n",(dat.isGroup == 1) ? dat.group : "SEM GRUPO");
     if(dat.type == TEXT)
         printf("\n%s\n",dat.data);
-    else
-        printf("Mensagem com tipo desconhecido: %d\n",dat.type);
+    else if(dat.type == IMAGE) {
+        printf("Imagem recebida:  size: %d... nome %s\n",dat.size-50,dat.data);
+
+        //nos 50 primeiros bytes de data temos o nome da imagem
+        FILE * img = fopen(dat.data, "w");
+        if (img == NULL) { printf("Img is null!\n"); return; }
+
+        int read = 0, size = dat.size - 50;
+        while (read < size) {
+            read += (int)fwrite( dat.data+read+50, 1,1024, img);
+            printf("Gravando imagem...%d bytes\n",read);
+        }
+        printf("Done. Escritos %d...tamanho %d\n",read,size);
+    }
     printf("\n======================================================================\n");
 
 }
@@ -101,7 +113,7 @@ contactDTO findContactMenu(contactDTO contacts[MAX_DATABASE_LENGTH], int numCont
 
         scanf("%d",&answ);
 
-        while(checkOption(answ,numContatos)){ //tamanho maximo sera igual ao retorno da funcao
+        while(!checkOption(answ,numContatos)){ //tamanho maximo sera igual ao retorno da funcao
             printf("Opcao invalida\n");
             scanf("%d",&answ);
         }
