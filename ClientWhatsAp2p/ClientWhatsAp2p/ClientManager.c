@@ -53,7 +53,7 @@ datagram encodeMessageToPeer(char *myNumber, char* groupName, MessageType type, 
     messageData mDat;
     strncpy(mDat.number,myNumber,sizeof(mDat.number));
 
-    if (groupName != NULL) {
+    if (strcmp(groupName,"") != 0) {
         strncpy(mDat.group, groupName, sizeof(mDat.group));
         mDat.isGroup = 1;
     }else{
@@ -194,7 +194,7 @@ serverQuery checkPeerOnline(short serverPort, char *serverHostName, const char w
     return query;
 }
 
-void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[MAX_DATABASE_LENGTH], int numContatos){
+void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[MAX_DATABASE_LENGTH], int numContatos, char myNum[26]){
     contactDTO contact;
     contact = findContactMenu(contacts,numContatos);
     printf("Contato num: %ld\n",contact.numbers[0]);
@@ -215,10 +215,12 @@ void sendDataToPeer(short serverPort, char *serverHostName, contactDTO contacts[
         type = IMAGE;
     }
 
-    // TODO: Pegar o meu numero de algum lugar salvo.
-    char myNumber[HEADER_PARAM_MESSAGE] = "123456";
-
-    datagram encMessage = encodeMessageToPeer(myNumber, contact.group, type, messageData, tamImg);
+    // verifica se eh grupo ou nao
+    char group[16] = "";
+    if (contact.isGroup == 1){
+        strncpy(group, contact.group,sizeof(group));
+    }
+    datagram encMessage = encodeMessageToPeer(myNum, group, type, messageData);
 
 
     //Envia mensagem para o contato
@@ -291,11 +293,6 @@ void requestLoop(short port, char *hostName, short listenPort){
     contactDTO contacts[MAX_DATABASE_LENGTH];
     int numContatos = readData(atol(num),contacts);
 
-//    printf("Digite o numero de quem voce deseja saber se esta online\n");
-//    scanf("%s",num);
-//
-//    checkPeerOnline(port,hostName,num);
-
     OptionsMainMenu opt;
 
     do{
@@ -305,7 +302,7 @@ void requestLoop(short port, char *hostName, short listenPort){
         switch (opt) {
             case SEND_MESSAGE:
                 printf("Opcao Mandar mensagem\n");
-                sendDataToPeer(port,hostName,contacts,numContatos);
+                sendDataToPeer(port,hostName,contacts,numContatos,num);
                 break;
             case CREATE_NEW_CONTACT:
                 printf("Opcao criar contato\n");
